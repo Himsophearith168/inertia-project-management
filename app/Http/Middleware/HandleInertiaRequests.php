@@ -40,6 +40,9 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
             ],
+            'auth' => [
+                'user' => fn () => $request->user()?->only('id', 'name', 'email', 'two_factor_confirmed_at'),
+            ],
         ];
     }
 }
