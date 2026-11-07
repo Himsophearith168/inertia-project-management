@@ -1,11 +1,15 @@
 <?php
 
-use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\RentalWorkspaceController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomPaymentController;
+use App\Http\Controllers\TenantController;
 use App\Http\Controllers\TwoFactorController;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/projects');
+Route::redirect('/', '/rooms');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -24,5 +28,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/security/two-factor/setup', [TwoFactorController::class, 'setup'])->name('two-factor.setup')->middleware('throttle:5,1');
     Route::post('/security/two-factor/confirm', [TwoFactorController::class, 'confirm'])->name('two-factor.confirm')->middleware('throttle:5,1');
     Route::delete('/security/two-factor', [TwoFactorController::class, 'disable'])->name('two-factor.disable')->middleware('throttle:5,1');
-    Route::resource('projects', ProjectController::class)->except('show');
+    Route::resource('rooms', RoomController::class)->except('show');
+    Route::post('/rooms/{room}/payments', [RoomPaymentController::class, 'store'])->name('rooms.payments.store');
+    Route::resource('tenants', TenantController::class)->except(['create', 'edit', 'show']);
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
+    Route::get('/contracts', [RentalWorkspaceController::class, 'show'])->defaults('section', 'contracts')->name('contracts.index');
+    Route::get('/maintenance', [RentalWorkspaceController::class, 'show'])->defaults('section', 'maintenance')->name('maintenance.index');
+    Route::get('/reports', [RentalWorkspaceController::class, 'show'])->defaults('section', 'reports')->name('reports.index');
 });

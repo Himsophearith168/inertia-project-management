@@ -37,7 +37,7 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return to_route('projects.index');
+        return to_route('rooms.index');
     }
 
     public function login(Request $request): RedirectResponse
@@ -61,7 +61,7 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
-        return to_route('projects.index');
+        return to_route('rooms.index');
     }
 
     public function showChallenge(Request $request): Response|RedirectResponse
@@ -86,7 +86,7 @@ class AuthController extends Controller
         $request->session()->forget('auth.pending_user_id');
         $request->session()->regenerate();
 
-        return to_route('projects.index');
+        return to_route('rooms.index');
     }
 
     public function googleRedirect(): RedirectResponse
@@ -128,7 +128,7 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return to_route('projects.index');
+        return to_route('rooms.index');
     }
 
     public function logout(Request $request): RedirectResponse
